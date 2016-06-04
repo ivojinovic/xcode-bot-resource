@@ -1,3 +1,4 @@
 #!/bin/bash
 
+echo "ABC" > t.txt
 echo '{"version":{"ref":"none"}}'
