@@ -1,4 +1,5 @@
 #!/bin/bash
 
-# echo "ABC" > t.txt
-echo '{"version":{"ref":"none"}}'
+cd $1
+echo "ABC" > t.txt
+echo '{"version": { "ref": "61cebf" }, "metadata": [ { "name": "commit", "value": "61cebf" }, { "name": "author", "value": "Hulk Hogan" }] }'
