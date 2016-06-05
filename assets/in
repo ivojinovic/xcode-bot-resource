@@ -13,7 +13,7 @@ destination=$1
 cd $destination
 echo "TEST" > test.txt
 
-echo '{
+jq -n '{
   "version": {
     "ref": "cba8422359aa242694978f581cf3f0c754ec5542"
   },
@@ -33,7 +33,7 @@ echo '{
     },
     {
       "name": "message",
-      "value": "Test\n",
+      "value": "Test",
       "type": "message"
     }
   ]
