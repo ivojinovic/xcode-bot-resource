@@ -22,12 +22,15 @@ cat > $payload <&0
 username=$(jq -r '.source.username // ""' < $payload)
 password=$(jq -r '.source.password // ""' < $payload)
 
-echo $username > t4.txt
+#echo $username > t4.txt
+
+echo -e "$username\n$password\n" | fly -t savannah login --concourse-url http://192.168.72.209/
+fly -t savannah builds -j pipeline_test_app_t2/isolation-tests-master-branch > t4.txt
 
 jq -n '{
-  "version": { "ref": "v002" },
+  "version": { "ref": "v003" },
   "metadata": [
-    { "name": "commit", "value": "v002" },
+    { "name": "commit", "value": "v003" },
     { "name": "author", "value": "Ivan Vojinovic" }
   ]
 }' >&3
