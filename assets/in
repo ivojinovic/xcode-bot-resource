@@ -9,9 +9,10 @@ exec 1>&2 # redirect all output to stderr for logging
 #REF="cba8422359aa242694978f581cf3f0c754ec5542"
 #jq -n "{version: {ref: $REF},metadata: {}}" >&3
 
-git clone --branch master ssh://git@github.com/ivojinovic/concourse-resource-test.git $1
+#git clone --branch master ssh://git@github.com/ivojinovic/concourse-resource-test.git $1
 cd $1
-git checkout 7257964759d838170815b8d89dbb47a1382c6ac1
+echo "TEST" > test.txt
+#git checkout 7257964759d838170815b8d89dbb47a1382c6ac1
 
 jq -n '{
   "version": { "ref": "7257964759d838170815b8d89dbb47a1382c6ac1" },
@@ -19,4 +20,4 @@ jq -n '{
     { "name": "commit", "value": "7257964759d838170815b8d89dbb47a1382c6ac1" },
     { "name": "author", "value": "Ivan Vojinovic" }
   ]
-}'
+}' >&3
