@@ -24,7 +24,7 @@ password=$(jq -r '.source.password // ""' < $payload)
 
 usernamejira=$(jq -r '.source.usernamejira // ""' < $payload)
 passwordjira=$(jq -r '.source.passwordjira // ""' < $payload)
-jiracreds = "$usernamejira:$passwordjira"
+jiracreds="$usernamejira:$passwordjira"
 
 #echo $username > t4.txt
 
@@ -34,9 +34,9 @@ fly -t savannah builds -j pipeline_test_app_t2/isolation-tests-master-branch > t
 curl -H "Accept:application/json" --user $jiracreds https://jira.zipcar.com/rest/api/2/search?jql=project=ZC%20and%20resolution=Done%20and%20assignee=ivojinovic > t5.txt
 
 jq -n '{
-  "version": { "ref": "v006" },
+  "version": { "ref": "v007" },
   "metadata": [
-    { "name": "commit", "value": "v006" },
+    { "name": "commit", "value": "v007" },
     { "name": "author", "value": "Ivan Vojinovic" }
   ]
 }' >&3
