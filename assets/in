@@ -13,7 +13,7 @@ exec 1>&2 # redirect all output to stderr for logging
 #git checkout 7257964759d838170815b8d89dbb47a1382c6ac1
 
 cd $1
-echo "TEST" > test.txt
+cat > test.txt <&0
 
 jq -n '{
   "version": { "ref": "7257964759d838170815b8d89dbb47a1382c6ac1" },
