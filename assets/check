@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "[]"
+echo '[{ "ref": "61cbef" }, { "ref": "d74e01" }, { "ref": "7154fe" }]'
