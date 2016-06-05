@@ -9,6 +9,10 @@ exec 1>&2 # redirect all output to stderr for logging
 #REF="cba8422359aa242694978f581cf3f0c754ec5542"
 #jq -n "{version: {ref: $REF},metadata: {}}" >&3
 
+destination=$1
+cd $destination
+eco "TEST" > test.txt
+
 echo '{
   "version": {
     "ref": "cba8422359aa242694978f581cf3f0c754ec5542"
