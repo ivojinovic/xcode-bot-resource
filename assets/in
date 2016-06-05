@@ -11,7 +11,7 @@ exec 1>&2 # redirect all output to stderr for logging
 
 destination=$1
 cd $destination
-eco "TEST" > test.txt
+echo "TEST" > test.txt
 
 echo '{
   "version": {
