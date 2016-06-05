@@ -15,12 +15,19 @@ exec 1>&2 # redirect all output to stderr for logging
 cd $1
 #rm test.txt
 echo "T2" > test2.txt
-cat > test3.txt <&0
+#cat > test3.txt <&0
+
+payload=$(mktemp $TMPDIR/git-resource-request.XXXXXX)
+cat > $payload <&0
+username=$(jq -r '.source.username // ""' < $payload)
+password=$(jq -r '.source.password // ""' < $payload)
+
+echo $username > t4.txt
 
 jq -n '{
-  "version": { "ref": "v001" },
+  "version": { "ref": "v002" },
   "metadata": [
-    { "name": "commit", "value": "v001" },
+    { "name": "commit", "value": "v002" },
     { "name": "author", "value": "Ivan Vojinovic" }
   ]
 }' >&3
