@@ -6,4 +6,4 @@ set -e
 exec 3>&1 # make stdout available as fd 3 for the result
 exec 1>&2 # redirect all output to stderr for logging
 
-echo '[{ "ref": "7257964759d838170815b8d89dbb47a1382c6ac1" }]' >&3
+echo '[{ "ref": "v001" }]' >&3

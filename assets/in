@@ -15,12 +15,12 @@ exec 1>&2 # redirect all output to stderr for logging
 cd $1
 #rm test.txt
 echo "T2" > test2.txt
-#cat > test3.txt <&0
+cat > test3.txt <&0
 
 jq -n '{
-  "version": { "ref": "7257964759d838170815b8d89dbb47a1382c6ac1" },
+  "version": { "ref": "v001" },
   "metadata": [
-    { "name": "commit", "value": "7257964759d838170815b8d89dbb47a1382c6ac1" },
+    { "name": "commit", "value": "v001" },
     { "name": "author", "value": "Ivan Vojinovic" }
   ]
 }' >&3
