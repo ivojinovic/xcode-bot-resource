@@ -9,4 +9,28 @@ exec 1>&2 # redirect all output to stderr for logging
 #REF="cba8422359aa242694978f581cf3f0c754ec5542"
 #jq -n "{version: {ref: $REF},metadata: {}}" >&3
 
-echo '{"version":{"ref":"none"}}'
+echo '{
+  "version": {
+    "ref": "cba8422359aa242694978f581cf3f0c754ec5542"
+  },
+  "metadata": [
+    {
+      "name": "commit",
+      "value": "cba8422359aa242694978f581cf3f0c754ec5542"
+    },
+    {
+      "name": "author",
+      "value": "Ivan Vojinovic"
+    },
+    {
+      "name": "author_date",
+      "value": "2016-06-04 19:09:22 -0400",
+      "type": "time"
+    },
+    {
+      "name": "message",
+      "value": "Test\n",
+      "type": "message"
+    }
+  ]
+}'
