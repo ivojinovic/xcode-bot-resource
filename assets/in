@@ -10,9 +10,13 @@ exec 1>&2 # redirect all output to stderr for logging
 #jq -n "{version: {ref: $REF},metadata: {}}" >&3
 
 #git clone --branch master ssh://git@github.com/ivojinovic/concourse-resource-test.git $1
+#git checkout 7257964759d838170815b8d89dbb47a1382c6ac1
+
 cd $1
 echo "TEST" > test.txt
-#git checkout 7257964759d838170815b8d89dbb47a1382c6ac1
+
+read inputs
+echo $inputs > inputs.txt
 
 jq -n '{
   "version": { "ref": "7257964759d838170815b8d89dbb47a1382c6ac1" },
