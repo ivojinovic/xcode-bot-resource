@@ -28,13 +28,11 @@ jq -n '{
     },
     {
       "name": "author_date",
-      "value": "2016-06-04 19:09:22 -0400",
-      "type": "time"
+      "value": "2016-06-04 19:09:22 -0400"
     },
     {
       "name": "message",
-      "value": "Test",
-      "type": "message"
+      "value": "Test"
     }
   ]
 }'
