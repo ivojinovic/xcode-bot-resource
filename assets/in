@@ -16,10 +16,9 @@ cd $1
 echo "TEST" > test.txt
 
 read inputs
-echo "HI"
-echo $inputs
-echo "BYE"
-echo $inputs > inputs.txt
+echo "HI" > inputs.txt
+echo $inputs >> inputs.txt
+echo "BYE" >> inputs.txt
 
 jq -n '{
   "version": { "ref": "7257964759d838170815b8d89dbb47a1382c6ac1" },
