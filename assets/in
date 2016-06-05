@@ -16,6 +16,9 @@ cd $1
 echo "TEST" > test.txt
 
 read inputs
+echo "HI"
+echo $inputs
+echo "BYE"
 echo $inputs > inputs.txt
 
 jq -n '{
