@@ -14,25 +14,9 @@ cd $destination
 echo "TEST" > test.txt
 
 jq -n '{
-  "version": {
-    "ref": "cba8422359aa242694978f581cf3f0c754ec5542"
-  },
+  "version": { "ref": "cba8422359aa242694978f581cf3f0c754ec5542" },
   "metadata": [
-    {
-      "name": "commit",
-      "value": "cba8422359aa242694978f581cf3f0c754ec5542"
-    },
-    {
-      "name": "author",
-      "value": "Ivan Vojinovic"
-    },
-    {
-      "name": "author_date",
-      "value": "2016-06-04 19:09:22 -0400"
-    },
-    {
-      "name": "message",
-      "value": "Test"
-    }
+    { "name": "commit", "value": "cba8422359aa242694978f581cf3f0c754ec5542" },
+    { "name": "author", "value": "Ivan Vojinovic" }
   ]
 }'
