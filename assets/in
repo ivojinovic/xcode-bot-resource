@@ -28,9 +28,9 @@ echo -e "$username\n$password\n" | fly -t savannah login --concourse-url http://
 fly -t savannah builds -j pipeline_test_app_t2/isolation-tests-master-branch > t4.txt
 
 jq -n '{
-  "version": { "ref": "v003" },
+  "version": { "ref": "v004" },
   "metadata": [
-    { "name": "commit", "value": "v003" },
+    { "name": "commit", "value": "v004" },
     { "name": "author", "value": "Ivan Vojinovic" }
   ]
 }' >&3
