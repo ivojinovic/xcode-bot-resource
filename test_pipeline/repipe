@@ -30,7 +30,7 @@ need_command spruce
 settings_file="$(ls -1 settings.yaml ${TARGET:+"settings-${TARGET}.yaml"} 2>/dev/null | tail -n1)"
 if [[ -z "$settings_file" ]]
 then
-  echo >&2 "Missing local settings in ci/settings.yaml${TARGET:+" or ci/settings-${TARGET}.yaml"}!"
+  echo >&2 "Missing local settings in test_pipeline/settings.yaml${TARGET:+" or test_pipeline/settings-${TARGET}.yaml"}!"
   exit 1
 fi
 
@@ -39,7 +39,7 @@ echo >&2 "Using settings found in ${settings_file}"
 credentials_file="$(ls -1 credentials.yaml ${TARGET:+"credentials-${TARGET}.yaml"} 2>/dev/null | tail -n1)"
 if [[ -z "credentials_file" ]]
 then
-  echo >&2 "Missing local settings in ci/credentials.yaml${TARGET:+" or ci/credentials-${TARGET}.yaml"}!"
+  echo >&2 "Missing local settings in test_pipeline/credentials.yaml${TARGET:+" or test_pipeline/credentials-${TARGET}.yaml"}!"
   exit 1
 fi
 
@@ -50,14 +50,14 @@ trap "rm -f deploy.yaml" QUIT TERM EXIT INT
 spruce merge pipeline.yaml ${settings_file} ${credentials_file} > deploy.yaml
 PIPELINE=$(spruce json deploy.yaml | jq -r '.meta.name // ""')
 if [[ -z ${PIPELINE} ]]; then
-	echo >&2 "Missing pipeline name in ci/settings.yaml!"
+	echo >&2 "Missing pipeline name in test_pipeline/settings.yaml!"
 	exit 1
 fi
 if [[ -z ${TARGET} ]]; then
 	TARGET=$(spruce json deploy.yaml | jq -r '.meta.target // ""')
 fi
 if [[ -z ${TARGET} ]]; then
-	echo >&2 "Missing Concourse Target in ci/settings.yaml!"
+	echo >&2 "Missing Concourse Target in test_pipeline/settings.yaml!"
 	exit 1
 fi
 

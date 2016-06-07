@@ -32,10 +32,17 @@ resources:
     usernamejira: (( grab meta.jira_username ))
     passwordjira: (( grab meta.jira_password ))
 
+- name: crt-source-code
+  type: git
+  source:
+    uri: https://github.com/ivojinovic/concourse-resource-test.git
+    branch: master
+
 jobs:
 - name: jarvis_api_master_isolation_tests
   plan:
     - get: crt
+    - get: crt-source-code
     - task: isolation-tests-status
       config:
         platform: linux
@@ -43,5 +50,7 @@ jobs:
         inputs:
         - name: crt
           path: crtdir
+        - name: crt-source-code
+          path: crtsrcdir
         run:
-          path: crtdir/test_pipeline/scripts/isolation-tests-status.sh
+          path: crtsrcdir/test_pipeline/scripts/isolation-tests-status.sh
