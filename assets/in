@@ -13,13 +13,18 @@ cat > $payload <&0
 username=$(jq -r '.source.username // ""' < $payload)
 password=$(jq -r '.source.password // ""' < $payload)
 
+job_name=jarvis_api/static-analysis-dev-branches
+
 echo -e "$username\n$password\n" | fly -t savannah login --concourse-url http://192.168.72.209/
-fly -t savannah builds -j jarvis_api/static-analysis-dev-branches > jarvis_api_sa_dev.txt
+fly -t savannah builds -j $job_name > jarvis_api_sa_dev.txt
+
+line=$(head -n 1 jarvis_api_sa_dev.txt)
+ref=$(echo $line  | sed 's/ .*//')
 
 jq -n '{
-  "version": { "ref": "v008" },
+  "version": { "ref": "'$ref'" },
   "metadata": [
-    { "name": "commit", "value": "v008" },
-    { "name": "author", "value": "Ivan Vojinovic" }
+    { "name": "commit", "value": "'$ref'" },
+    { "name": "author", "value": "'$job_name'" }
   ]
 }' >&3

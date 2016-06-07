@@ -6,4 +6,15 @@ set -e
 exec 3>&1 # make stdout available as fd 3 for the result
 exec 1>&2 # redirect all output to stderr for logging
 
-echo '[{ "ref": "v008" }]' >&3
+payload=$(mktemp $TMPDIR/git-resource-request.XXXXXX)
+cat > $payload <&0
+username=$(jq -r '.source.username // ""' < $payload)
+password=$(jq -r '.source.password // ""' < $payload)
+
+echo -e "$username\n$password\n" | fly -t savannah login --concourse-url http://192.168.72.209/
+fly -t savannah builds -j jarvis_api/static-analysis-dev-branches > jarvis_api_sa_dev.txt
+
+line=$(head -n 1 jarvis_api_sa_dev.txt)
+ref=$(echo $line  | sed 's/ .*//')
+
+echo '[{ "ref": "'$ref'" }]' >&3
