@@ -6,37 +6,20 @@ set -e
 exec 3>&1 # make stdout available as fd 3 for the result
 exec 1>&2 # redirect all output to stderr for logging
 
-#REF="cba8422359aa242694978f581cf3f0c754ec5542"
-#jq -n "{version: {ref: $REF},metadata: {}}" >&3
-
-#git clone --branch master ssh://git@github.com/ivojinovic/concourse-resource-test.git $1
-#git checkout 7257964759d838170815b8d89dbb47a1382c6ac1
-
 cd $1
-#rm test.txt
-echo "T2" > test2.txt
-#cat > test3.txt <&0
 
 payload=$(mktemp $TMPDIR/git-resource-request.XXXXXX)
 cat > $payload <&0
 username=$(jq -r '.source.username // ""' < $payload)
 password=$(jq -r '.source.password // ""' < $payload)
 
-usernamejira=$(jq -r '.source.usernamejira // ""' < $payload)
-passwordjira=$(jq -r '.source.passwordjira // ""' < $payload)
-jiracreds="$usernamejira:$passwordjira"
-
-#echo $username > t4.txt
-
 echo -e "$username\n$password\n" | fly -t savannah login --concourse-url http://192.168.72.209/
-fly -t savannah builds -j pipeline_test_app_t2/isolation-tests-master-branch > t4.txt
-
-curl -H "Accept:application/json" --user $jiracreds https://jira.zipcar.com/rest/api/2/search?jql=project=ZC%20and%20resolution=Done%20and%20assignee=ivojinovic > t5.txt
+fly -t savannah builds -j jarvis_api/static-analysis-dev-branches > jarvis_api_sa_dev.txt
 
 jq -n '{
-  "version": { "ref": "v007" },
+  "version": { "ref": "v008" },
   "metadata": [
-    { "name": "commit", "value": "v007" },
+    { "name": "commit", "value": "v008" },
     { "name": "author", "value": "Ivan Vojinovic" }
   ]
 }' >&3
