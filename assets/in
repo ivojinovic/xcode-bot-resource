@@ -8,23 +8,25 @@ exec 1>&2 # redirect all output to stderr for logging
 
 cd $1
 
-payload=$(mktemp $TMPDIR/git-resource-request.XXXXXX)
+payload=$(mktemp $TMPDIR/resource-request.XXXXXX)
 cat > $payload <&0
+
+concourse_url=$(jq -r '.source.concourse_url // ""' < $payload)
 username=$(jq -r '.source.username // ""' < $payload)
 password=$(jq -r '.source.password // ""' < $payload)
+pipeline=$(jq -r '.source.pipeline // ""' < $payload)
+job=$(jq -r '.source.job // ""' < $payload)
 
-job_name=jarvis_api/static-analysis-dev-branches
+echo -e "$username\n$password\n" | fly -t savannah login --concourse-url $concourse_url
+fly -t savannah builds -j $pipeline/$job > $pipeline.$job.txt
 
-echo -e "$username\n$password\n" | fly -t savannah login --concourse-url http://192.168.72.209/
-fly -t savannah builds -j $job_name > jarvis_api_sa_dev.txt
-
-line=$(head -n 1 jarvis_api_sa_dev.txt)
-ref=$(echo $line  | sed 's/ .*//')
+line=$(head -n 1 $pipeline.$job.txt)
+ref=$(echo $line | cut -d " " -f 3)
 
 jq -n '{
   "version": { "ref": "'$ref'" },
   "metadata": [
     { "name": "commit", "value": "'$ref'" },
-    { "name": "author", "value": "'$job_name'" }
+    { "name": "author", "value": "'$pipeline.$job'" }
   ]
 }' >&3
