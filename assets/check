@@ -18,8 +18,13 @@ fly -t savannah builds -j jarvis_api/static-analysis-dev-branches > jarvis_api_s
 line=$(head -n 1 jarvis_api_sa_dev.txt)
 ref=$(echo $line  | sed 's/ .*//')
 
-if [ "${curr_ref}" = "${ref}" ]; then
+if [[ $line == *"started"* ]]
+then
     echo '[{ "ref": "'$curr_ref'" }]' >&3
 else
-    echo '[{ "ref": "'$curr_ref'" }, { "ref": "'$ref'" }]' >&3
+    if [ "${curr_ref}" = "${ref}" ]; then
+        echo '[{ "ref": "'$curr_ref'" }]' >&3
+    else
+        echo '[{ "ref": "'$curr_ref'" }, { "ref": "'$ref'" }]' >&3
+    fi
 fi
