@@ -10,6 +10,7 @@ payload=$(mktemp $TMPDIR/git-resource-request.XXXXXX)
 cat > $payload <&0
 username=$(jq -r '.source.username // ""' < $payload)
 password=$(jq -r '.source.password // ""' < $payload)
+curr_ref=$(jq -r '.version.ref // ""' < $payload)
 
 echo -e "$username\n$password\n" | fly -t savannah login --concourse-url http://192.168.72.209/
 fly -t savannah builds -j jarvis_api/static-analysis-dev-branches > jarvis_api_sa_dev.txt
@@ -17,4 +18,8 @@ fly -t savannah builds -j jarvis_api/static-analysis-dev-branches > jarvis_api_s
 line=$(head -n 1 jarvis_api_sa_dev.txt)
 ref=$(echo $line  | sed 's/ .*//')
 
-echo '[{ "ref": "'$ref'" }]' >&3
+if [ "${curr_ref}" = "${ref}" ]; then
+    echo '[{ "ref": "'$curr_ref'" }]' >&3
+else
+    echo '[{ "ref": "'$curr_ref'" }, { "ref": "'$ref'" }]' >&3
+fi
