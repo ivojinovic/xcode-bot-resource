@@ -23,6 +23,8 @@ fly -t savannah builds -j $pipeline/$job > $pipeline.$job.txt
 line=$(head -n 1 $pipeline.$job.txt)
 ref=$(echo $line | cut -d " " -f 3)
 
+curl -i https://10.144.0.246:20343/api/bots/78ef8fccddc19c558d16cfbb3d38417c/integrations -k > ios.bot.txt
+
 jq -n '{
   "version": { "ref": "'$ref'" },
   "metadata": [
