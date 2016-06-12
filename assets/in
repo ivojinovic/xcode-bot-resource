@@ -11,6 +11,7 @@ cd $1
 
 payload=$(mktemp $TMPDIR/resource-request.XXXXXX)
 cat > $payload <&0
+echo $payload
 
 xcode_api_url=$(jq -r '.source.xcode_api_url // ""' < $payload)
 unit_bot_id=$(jq -r '.source.unit_bot_id // ""' < $payload)
