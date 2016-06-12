@@ -19,7 +19,10 @@ bot_name=$(jq -r '.source.bot_name // ""' < $payload)
 
 full_bot_url=$xcode_api_url$unit_bot_id$bot_path
 curl $full_bot_url -k > $bot_name.txt
+ls -lh $bot_name.txt
+
 cat $bot_name.txt | jq '.["results"][0]' > $unit_bot_id
+ls -lh $unit_bot_id
 
 count=$(cat $bot_name.txt | jq '.["count"]')
 
