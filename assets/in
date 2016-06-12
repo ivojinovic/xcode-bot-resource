@@ -23,12 +23,12 @@ fly -t savannah builds -j $pipeline/$job > $pipeline.$job.txt
 line=$(head -n 1 $pipeline.$job.txt)
 ref=$(echo $line | cut -d " " -f 3)
 
-api_url=$(jq -r '.source.api_url // ""' < $payload)
+xcode_api_url=$(jq -r '.source.xcode_api_url // ""' < $payload)
 unit_bot_id=$(jq -r '.source.unit_bot_id // ""' < $payload)
 bot_path=$(jq -r '.source.bot_path // ""' < $payload)
 bot_name=$(jq -r '.source.bot_name // ""' < $payload)
 
-full_bot_url=$api_url$unit_bot_id$bot_path
+full_bot_url=$xcode_api_url$unit_bot_id$bot_path
 curl $full_bot_url -k > $bot_name.txt
 
 jq -n '{
