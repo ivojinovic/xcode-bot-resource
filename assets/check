@@ -9,26 +9,14 @@ exec 1>&2 # redirect all output to stderr for logging
 payload=$(mktemp $TMPDIR/resource-request.XXXXXX)
 cat > $payload <&0
 
-concourse_url=$(jq -r '.source.concourse_url // ""' < $payload)
-username=$(jq -r '.source.username // ""' < $payload)
-password=$(jq -r '.source.password // ""' < $payload)
-pipeline=$(jq -r '.source.pipeline // ""' < $payload)
-job=$(jq -r '.source.job // ""' < $payload)
+xcode_api_url=$(jq -r '.source.xcode_api_url // ""' < $payload)
+unit_bot_id=$(jq -r '.source.unit_bot_id // ""' < $payload)
+bot_path=$(jq -r '.source.bot_path // ""' < $payload)
+bot_name=$(jq -r '.source.bot_name // ""' < $payload)
 
-echo -e "$username\n$password\n" | fly -t savannah login --concourse-url $concourse_url
-fly -t savannah builds -j $pipeline/$job > $pipeline.$job.txt
+full_bot_url=$xcode_api_url$unit_bot_id$bot_path
+curl $full_bot_url -k > $bot_name.txt
 
-line=$(head -n 1 $pipeline.$job.txt)
-ref=$(echo $line | cut -d " " -f 3)
-status=$(echo $line | cut -d " " -f 4)
+count=$(cat $bot_name.txt | jq '.["count"]')
 
-if [[ $status = "started" ]]
-then
-    echo '[{ "ref": "'$curr_ref'" }]' >&3
-else
-    if [ "${curr_ref}" = "${ref}" ]; then
-        echo '[{ "ref": "'$curr_ref'" }]' >&3
-    else
-        echo '[{ "ref": "'$curr_ref'" }, { "ref": "'$ref'" }]' >&3
-    fi
-fi
+echo '[{ "ref": "'$count'" }]' >&3

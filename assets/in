@@ -11,18 +11,6 @@ cd $1
 payload=$(mktemp $TMPDIR/resource-request.XXXXXX)
 cat > $payload <&0
 
-concourse_url=$(jq -r '.source.concourse_url // ""' < $payload)
-username=$(jq -r '.source.username // ""' < $payload)
-password=$(jq -r '.source.password // ""' < $payload)
-pipeline=$(jq -r '.source.pipeline // ""' < $payload)
-job=$(jq -r '.source.job // ""' < $payload)
-
-echo -e "$username\n$password\n" | fly -t savannah login --concourse-url $concourse_url
-fly -t savannah builds -j $pipeline/$job > $pipeline.$job.txt
-
-line=$(head -n 1 $pipeline.$job.txt)
-ref=$(echo $line | cut -d " " -f 3)
-
 xcode_api_url=$(jq -r '.source.xcode_api_url // ""' < $payload)
 unit_bot_id=$(jq -r '.source.unit_bot_id // ""' < $payload)
 bot_path=$(jq -r '.source.bot_path // ""' < $payload)
@@ -31,10 +19,12 @@ bot_name=$(jq -r '.source.bot_name // ""' < $payload)
 full_bot_url=$xcode_api_url$unit_bot_id$bot_path
 curl $full_bot_url -k > $bot_name.txt
 
+count=$(cat $bot_name.txt | jq '.["count"]')
+
 jq -n '{
-  "version": { "ref": "'$ref'" },
+  "version": { "ref": "'$count'" },
   "metadata": [
-    { "name": "commit", "value": "'$ref'" },
-    { "name": "author", "value": "'$pipeline.$job'" }
+    { "name": "commit", "value": "'$count'" },
+    { "name": "author", "value": "'$full_bot_url'" }
   ]
 }' >&3
