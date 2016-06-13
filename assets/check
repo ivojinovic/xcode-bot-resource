@@ -13,6 +13,8 @@ xcode_api_url=$(jq -r '.source.xcode_api_url // ""' < $payload)
 unit_bot_id=$(jq -r '.source.unit_bot_id // ""' < $payload)
 bot_path=$(jq -r '.source.bot_path // ""' < $payload)
 bot_name=$(jq -r '.source.bot_name // ""' < $payload)
+curr_ref=$(jq -r '.version.ref // ""' < $payload)
+echo $curr_ref
 
 full_bot_url=$xcode_api_url$unit_bot_id$bot_path
 curl $full_bot_url -k > $bot_name.txt
