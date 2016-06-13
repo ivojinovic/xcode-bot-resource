@@ -14,11 +14,25 @@ unit_bot_id=$(jq -r '.source.unit_bot_id // ""' < $payload)
 bot_path=$(jq -r '.source.bot_path // ""' < $payload)
 bot_name=$(jq -r '.source.bot_name // ""' < $payload)
 curr_ref=$(jq -r '.version.ref // ""' < $payload)
-echo $curr_ref
+echo "current version:$curr_ref:"
 
 full_bot_url=$xcode_api_url$unit_bot_id$bot_path
 curl $full_bot_url -k > $bot_name.txt
 
-count=$(cat $bot_name.txt | jq '.["count"]')
+ref=$(cat $bot_name.txt | jq '.["count"]')
+echo "new version:$ref:"
 
-echo '[{ "ref": "'$count'" }]' >&3
+result=$(cat $bot_name.txt | jq -r '.["result"]')
+echo "result:$result:"
+
+if [[ $status = "unknown" ]]
+then
+    echo '[{ "ref": "'$curr_ref'" }]' >&3
+else
+    if [ "${curr_ref}" = "${ref}" ]; then
+        echo '[{ "ref": "'$curr_ref'" }]' >&3
+    else
+        echo '[{ "ref": "'$curr_ref'" }, { "ref": "'$ref'" }]' >&3
+    fi
+fi
+
