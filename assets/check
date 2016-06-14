@@ -27,12 +27,12 @@ curl -X POST -d "result=$result&curr_ref=$curr_ref&ref=$ref" http://requestb.in/
 
 if [[ $result = "unknown" ]]
 then
-    echo '[{ "ref": "'$curr_ref'" }]' >&3
+    echo '[{ "ref": "1" }]' >&3
 else
     if [ "${curr_ref}" = "${ref}" ]; then
-        echo '[{ "ref": "'$curr_ref'" }]' >&3
+        echo '[{ "ref": "2" }]' >&3
     else
-        echo '[{ "ref": "'$curr_ref'" }, { "ref": "'$ref'" }]' >&3
+        echo '[{ "ref": "3" }, { "ref": "4" }]' >&3
     fi
 fi
 
