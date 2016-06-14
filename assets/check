@@ -26,14 +26,17 @@ debug_new_version=":$ref:"
 result=$(cat $bot_name.txt | jq -r '.["result"]')
 debug_result=":$result:"
 
+f_curr_ref="c:$result:$curr_ref"
+f_ref="r:$result:$ref"
+
 if [[ $result = "unknown" ]]
 then
-    echo '[{ "ref": "'$curr_ref'" }]' >&3
+    echo '[{ "ref": "'$f_curr_ref'" }]' >&3
 else
     if [ "${curr_ref}" = "${ref}" ]; then
-        echo '[{ "ref": "'$curr_ref'" }]' >&3
+        echo '[{ "ref": "'$f_curr_ref'" }]' >&3
     else
-        echo '[{ "ref": "'$curr_ref'" }, { "ref": "'$ref'" }]' >&3
+        echo '[{ "ref": "'$f_curr_ref'" }, { "ref": "'$f_ref'" }]' >&3
     fi
 fi
 
