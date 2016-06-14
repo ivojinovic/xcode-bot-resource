@@ -7,8 +7,6 @@ set -x
 exec 3>&1 # make stdout available as fd 3 for the result
 exec 1>&2 # redirect all output to stderr for logging
 
-curl -X POST -d "in=in" http://requestb.in/1fedvf61
-
 cd $1
 
 payload=$(mktemp $TMPDIR/resource-request.XXXXXX)
@@ -19,7 +17,6 @@ xcode_api_url=$(jq -r '.source.xcode_api_url // ""' < $payload)
 unit_bot_id=$(jq -r '.source.unit_bot_id // ""' < $payload)
 bot_path=$(jq -r '.source.bot_path // ""' < $payload)
 bot_name=$(jq -r '.source.bot_name // ""' < $payload)
-curr_ref=$(jq -r '.version.ref // ""' < $payload)
 
 full_bot_url=$xcode_api_url$unit_bot_id$bot_path
 curl $full_bot_url -k > $bot_name.txt
@@ -31,7 +28,7 @@ ls -lh $unit_bot_id
 count=$(cat $bot_name.txt | jq '.["count"]')
 
 jq -n '{
-  "version": { "ref": "-1" },
+  "version": { "ref": "'$count'" },
   "metadata": [
     { "name": "commit", "value": "'$count'" },
     { "name": "author", "value": "'$full_bot_url'" }
