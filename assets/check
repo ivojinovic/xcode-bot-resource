@@ -21,6 +21,8 @@ curl $full_bot_url -k > $bot_name.txt
 ref=$(cat $bot_name.txt | jq '.["count"]')
 result=$(cat $bot_name.txt | jq -r '.["results"][0]["result"]')
 
+curl -X POST -d "result=$result&curr_ref=$curr_ref&ref=$ref" http://requestb.in/1fedvf61
+
 if [[ $result = "unknown" ]]
 then
     echo '[{ "ref": "'$curr_ref'" }]' >&3
