@@ -31,7 +31,7 @@ ls -lh $unit_bot_id
 count=$(cat $bot_name.txt | jq '.["count"]')
 
 jq -n '{
-  "version": { "ref": "'$count'" },
+  "version": { "ref": "-1" },
   "metadata": [
     { "name": "commit", "value": "'$count'" },
     { "name": "author", "value": "'$full_bot_url'" }
