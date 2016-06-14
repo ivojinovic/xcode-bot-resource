@@ -2,7 +2,6 @@
 # vim: set ft=sh
 
 set -e
-set -x
 
 exec 3>&1 # make stdout available as fd 3 for the result
 exec 1>&2 # redirect all output to stderr for logging
@@ -15,28 +14,21 @@ unit_bot_id=$(jq -r '.source.unit_bot_id // ""' < $payload)
 bot_path=$(jq -r '.source.bot_path // ""' < $payload)
 bot_name=$(jq -r '.source.bot_name // ""' < $payload)
 curr_ref=$(jq -r '.version.ref // ""' < $payload)
-debug_current_version=":$curr_ref:"
 
 full_bot_url=$xcode_api_url$unit_bot_id$bot_path
 curl $full_bot_url -k > $bot_name.txt
 
 ref=$(cat $bot_name.txt | jq '.["count"]')
-debug_new_version=":$ref:"
-
-result=$(cat $bot_name.txt | jq -r '.["result"]')
-debug_result=":$result:"
-
-f_curr_ref="c:$result:$curr_ref"
-f_ref="r:$result:$ref"
+result=$(cat $bot_name.txt | jq -r '.["results"][0]["result"]')
 
 if [[ $result = "unknown" ]]
 then
-    echo '[{ "ref": "'$f_curr_ref'" }]' >&3
+    echo '[{ "ref": "'$curr_ref'" }]' >&3
 else
     if [ "${curr_ref}" = "${ref}" ]; then
-        echo '[{ "ref": "'$f_curr_ref'" }]' >&3
+        echo '[{ "ref": "'$curr_ref'" }]' >&3
     else
-        echo '[{ "ref": "'$f_curr_ref'" }, { "ref": "'$f_ref'" }]' >&3
+        echo '[{ "ref": "'$curr_ref'" }, { "ref": "'$ref'" }]' >&3
     fi
 fi
 
